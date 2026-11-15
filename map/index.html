@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Tambak Lorok community mapping: places, community accounts and a shared timeline.">
+  <title>AI for Climate Future · Tambak Lorok</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:,">
+  <script defer src="config.js"></script>
+  <script defer src="../data/atlas-data.js"></script>
+  <script defer src="core.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><h1>AI for Climate Future</h1><p>Tambak Lorok <span>·</span> Community map &amp; timeline</p></div>
+    <nav class="layer-controls" aria-label="Map layers">
+      <button type="button" class="layer-chip" data-layer="Development" aria-pressed="true"><span class="dot development"></span>Development <span class="chip-count" id="count-Development"></span></button>
+      <button type="button" class="layer-chip" data-layer="Assets" aria-pressed="true"><span class="dot assets"></span>Assets <span class="chip-count" id="count-Assets"></span></button>
+      <button type="button" class="layer-chip" data-layer="Risks" aria-pressed="true"><span class="dot risks"></span>Risks <span class="chip-count" id="count-Risks"></span></button>
+    </nav>
+  </header>
+  <main>
+    <div class="workspace-toolbar">
+      <div class="group-field">
+        <label for="group">Workshop group</label>
+        <select id="group" aria-label="Workshop group">
+          <option value="all" selected>All groups</option>
+          <option value="A">Group A</option>
+          <option value="B">Group B</option>
+          <option value="C">Group C</option>
+          <option value="D">Group D</option>
+          <option value="E">Group E</option>
+        </select>
+      </div>
+      <div class="place-search"><label class="sr-only" for="place-search">Find a place</label><input id="place-search" type="search" placeholder="Find a place in Group A…" autocomplete="off" aria-controls="search-results"><div id="search-results" class="search-results" hidden></div></div>
+      <button id="sample-toggle" class="quiet-button" type="button" aria-pressed="false">8 example places</button>
+      <span class="prototype-label">Working prototype</span>
+    </div>
+    <div class="workspace-grid">
+      <section class="map-card" aria-label="Community map">
+        <div id="map" class="map-viewport" aria-label="Geographic map of Tambak Lorok">
+          <img id="reference-basemap" class="reference-basemap" src="assets/reference-basemap.jpg" alt="Workshop reference basemap of Tambak Lorok" draggable="false">
+          <svg id="map-markers" class="map-markers" aria-label="Mapped places"></svg>
+          <div id="mapbox-container" hidden></div>
+        </div>
+        <div class="map-location-label"><span class="map-location-dot"></span>Tambak Lorok <span class="map-separator">/</span> <span id="map-group-label">All groups</span></div>
+        <div class="map-controls" aria-label="Map controls"><button id="zoom-in" aria-label="Zoom in" type="button">+</button><button id="zoom-out" aria-label="Zoom out" type="button">−</button><button id="fit-map" aria-label="Show all visible locations" type="button">↗</button></div>
+        <div class="north-arrow" aria-hidden="true">N<span>↑</span></div>
+        <div id="map-tooltip" class="map-tooltip" hidden></div>
+        <div id="map-empty" class="map-empty" hidden>No layers selected. Turn on a layer to see its places.</div>
+        <div class="map-bottom"><span id="map-status">222 mapped locations</span><span id="map-source">Workshop reference map</span></div>
+      </section>
+      <aside class="detail-card" aria-live="polite" aria-label="Location details">
+        <div class="panel-heading"><h2 id="detail-heading">Location Details</h2><span class="small-caps" id="selection-type">MAP LOCATION</span></div>
+        <div id="detail" class="detail-body"></div>
+      </aside>
+    </div>
+    <section class="timeline-card" aria-label="Community timeline">
+      <div class="timeline-heading"><div><h2>Timeline</h2><p id="timeline-subtitle">Community accounts connected to this place</p></div><div class="timeline-view" role="group" aria-label="Timeline scope"><button id="location-view" type="button" aria-pressed="true">This location</button><button id="group-view" type="button" aria-pressed="false">Group A</button></div></div>
+      <div class="timeline-legend"><span><i class="legend-location"></i>Location link</span><span><i class="legend-theme"></i>Thematic background</span><span><i class="legend-future"></i>Future / aspiration</span></div>
+      <p class="timeline-pan-hint">Swipe sideways to explore the years ↔</p>
+      <div id="timeline-empty" class="empty-timeline" hidden></div>
+      <div class="timeline-scroll"><svg id="timeline" role="group" aria-label="Workshop timeline"></svg></div>
+      <div id="undated-notes" class="undated-notes" hidden></div>
+      <div class="timeline-foot"><span>Intervals follow the original workshop timeline; they are not precise calendar dates.</span><span id="timeline-count"></span></div>
+    </section>
+    <footer class="page-footer"><span>Each group’s accounts stay together. Related themes remain distinct from location links.</span><a href="../en.html">Project website ↗</a></footer>
+  </main>
+  <noscript>This interactive prototype needs JavaScript enabled.</noscript>
+</body>
+</html>

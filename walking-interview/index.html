@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prototipe pencatatan wawancara sambil berjalan di Tambak Lorok.">
+  <title>Wawancara sambil berjalan · Tambak Lorok</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="../map/config.js"></script>
+  <script defer src="../data/atlas-data.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="workshop-return" id="workshop-return" href="../#january-workshop">← Kembali ke lokakarya</a>
+      <p class="location">Tambak Lorok, Semarang</p>
+      <h1>Wawancara sambil berjalan</h1>
+      <nav class="main-nav" aria-label="Navigasi prototipe">
+        <button type="button" id="nav-map" aria-pressed="true">Peta</button>
+        <button type="button" id="nav-records" aria-pressed="false">Catatan <span id="record-count" class="record-count" hidden></span></button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="screen-map" class="screen" aria-labelledby="map-title">
+        <div class="screen-heading">
+          <h2 id="map-title" tabindex="-1">Pilih lokasi</h2>
+          <p>Pilih tempat yang sudah dipetakan, tambahkan titik, atau impor rute.</p>
+        </div>
+        <div class="place-search">
+          <label class="sr-only" for="place-search">Cari nama tempat</label>
+          <input type="search" id="place-search" placeholder="Cari nama tempat" autocomplete="off">
+          <ul id="search-results" class="search-results" aria-label="Hasil pencarian" hidden></ul>
+        </div>
+        <div class="actions map-actions">
+          <button type="button" class="button secondary" id="add-point" aria-pressed="false" disabled>Tambah titik</button>
+          <button type="button" class="button secondary" data-file="gpx-file">Impor GPX</button>
+        </div>
+        <input type="file" id="gpx-file" accept=".gpx,application/gpx+xml" hidden>
+        <p class="message" id="map-message" role="status">Memuat peta…</p>
+        <div class="map-card">
+          <div id="field-map" aria-label="Peta interaktif Tambak Lorok" role="region"></div>
+        </div>
+        <ul class="map-legend" aria-label="Legenda peta" role="list">
+          <li><span class="legend-dot development"></span>Pembangunan</li>
+          <li><span class="legend-dot assets"></span>Aset</li>
+          <li><span class="legend-dot risks"></span>Risiko</li>
+          <li><span class="legend-dot saved"></span>Catatan</li>
+        </ul>
+        <div id="draft-route" class="selection-card" hidden>
+          <div><strong id="draft-route-name"></strong><small id="draft-route-size"></small></div>
+          <button type="button" class="quiet-button" id="remove-route">Hapus rute</button>
+        </div>
+        <div class="selection-card">
+          <div>
+            <strong id="selection-name">Belum ada lokasi</strong>
+            <small id="selection-meta">Ketuk titik pada peta atau cari nama tempat.</small>
+          </div>
+          <button class="button primary" type="button" id="start-note" disabled>Lanjutkan</button>
+        </div>
+      </section>
+
+      <section id="screen-form" class="screen" aria-labelledby="form-title" hidden>
+        <button type="button" class="back-button" id="back-to-map">← Peta</button>
+        <div class="screen-heading">
+          <h2 id="form-title" tabindex="-1">Catat cerita</h2>
+          <p id="form-place"></p>
+        </div>
+        <form id="capture-form">
+          <label id="place-name-field" class="field" hidden>
+            <span>Nama tempat <small>opsional</small></span>
+            <input name="placeName" maxlength="120" placeholder="Misalnya, dermaga lama">
+          </label>
+          <label class="field">
+            <span>Ingatan warga</span>
+            <textarea name="memory" rows="4" placeholder="Apa yang warga ingat tentang tempat ini?"></textarea>
+          </label>
+          <label class="field">
+            <span>Waktu kejadian <small>opsional</small></span>
+            <input name="eventTime" maxlength="100" placeholder="Misalnya, sekitar tahun 2015">
+          </label>
+          <label class="field">
+            <span>Komentar Anda <small>opsional</small></span>
+            <textarea name="comment" rows="3" placeholder="Apa yang Anda amati saat berkunjung?"></textarea>
+          </label>
+          <label class="field">
+            <span>Kelompok pencatat <small>opsional</small></span>
+            <input name="recorderGroup" maxlength="80" placeholder="Nama atau kode kelompok">
+          </label>
+          <fieldset class="media-fieldset">
+            <legend>Foto dan audio</legend>
+            <div class="actions media-actions">
+              <button type="button" class="button secondary" data-file="camera-file">Ambil foto</button>
+              <button type="button" class="button secondary" data-file="photo-files">Pilih foto</button>
+              <button type="button" class="button secondary" id="record-audio" aria-pressed="false">Rekam audio</button>
+              <button type="button" class="button secondary" data-file="audio-files">Pilih audio</button>
+            </div>
+            <input type="file" id="camera-file" accept="image/*" capture="environment" hidden>
+            <input type="file" id="photo-files" accept="image/*" multiple hidden>
+            <input type="file" id="audio-files" accept="audio/*,.m4a,.aac,.wav,.mp3,.ogg,.webm" multiple hidden>
+            <p class="message" id="media-message" role="status" hidden></p>
+            <div id="draft-attachments" class="attachments"></div>
+          </fieldset>
+          <p class="message error" id="form-error" role="alert" hidden></p>
+          <button type="submit" class="button primary full-width" id="review-note">Periksa catatan</button>
+        </form>
+      </section>
+
+      <section id="screen-review" class="screen" aria-labelledby="review-title" hidden>
+        <button type="button" class="back-button" id="edit-note">← Ubah catatan</button>
+        <div class="screen-heading">
+          <h2 id="review-title" tabindex="-1">Periksa catatan</h2>
+          <p>Periksa lokasi, isi, dan lampiran sebelum menyimpan.</p>
+        </div>
+        <div id="review-content"></div>
+        <p class="message" id="save-status" role="status" hidden></p>
+        <button type="button" class="button primary full-width" id="save-note">Simpan catatan</button>
+      </section>
+
+      <section id="screen-records" class="screen" aria-labelledby="records-title" hidden>
+        <div class="screen-heading">
+          <h2 id="records-title" tabindex="-1">Catatan tersimpan</h2>
+          <p>Catatan dan lampiran tersimpan di peramban ini.</p>
+        </div>
+        <p class="empty-card" id="empty-records">Belum ada catatan tersimpan.</p>
+        <p class="message error" id="records-error" role="alert" hidden></p>
+        <ul class="record-list" id="records-list" role="list"></ul>
+      </section>
+
+      <section id="screen-detail" class="screen" aria-labelledby="detail-title" hidden>
+        <button type="button" class="back-button" id="back-to-records">← Catatan</button>
+        <div class="screen-heading">
+          <h2 id="detail-title" tabindex="-1">Catatan tersimpan</h2>
+          <p id="detail-status" role="status" hidden></p>
+        </div>
+        <div id="detail-content"></div>
+        <button type="button" class="button primary full-width" id="show-record-map">Lihat di peta</button>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

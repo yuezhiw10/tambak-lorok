@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pratinjau ponsel · AI for Just Climate Futures</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { padding: 12px; }
+
+    .phone-preview { width: min(100%, 392px); margin-inline: auto; }
+
+    .preview-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .preview-bar h1 { font-size: 16px; }
+
+    .preview-bar a { padding-block: 8px; color: var(--accent); font-size: 13px; text-underline-offset: 3px; }
+
+    .preview-screen {
+      display: block;
+      width: 100%;
+      height: min(846px, calc(100dvh - 60px));
+      min-height: 380px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 12px 36px rgb(24 35 37 / 12%);
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-preview">
+    <header class="preview-bar">
+      <h1>Pratinjau ponsel</h1>
+      <a href="./" target="phone-preview">Kembali ke beranda</a>
+    </header>
+    <iframe class="preview-screen" src="./" name="phone-preview" title="Situs proyek dalam tampilan ponsel"></iframe>
+  </div>
+</body>
+</html>
